@@ -23,3 +23,26 @@
 	  color:#447;
 	 }
 
+
+	.fading {
+	    -webkit-animation-duration: 4s;
+	    -webkit-animation-name: fading;
+	    animation-duration: 4s;
+	    animation-name: fading;
+	}
+	@-webkit-keyframes fading {
+	    from {
+	        color: red;
+	    }
+	    to {
+	        color: black;
+	    }
+	}
+	@keyframes fading {
+	    from {
+	        color: red;
+	    }
+	    to {
+	        color: black;
+	    }
+	}

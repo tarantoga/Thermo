@@ -8,9 +8,15 @@
 
 module.exports = {
 
-  attributes: {
-	name: 'string',
-	batt_level: 'float'
-  }
-
+	attributes: {
+		name: {
+			type: 'string',
+			required: true,
+			len: 2
+		},
+		batt_level: {
+			type: 'float',
+			required: true
+		}
+	}
 };

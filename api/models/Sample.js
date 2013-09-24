@@ -8,9 +8,15 @@
 
 module.exports = {
 
-  attributes: {
-	device: 'string',
-	value: 'float'
-  }
-
+ 	attributes: {
+		device: {
+			type: 'string',
+			required: true,
+			len: 2
+		},
+		value: {
+			type: 'float',
+			required: true
+ 		}
+	}
 };

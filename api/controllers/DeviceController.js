@@ -8,27 +8,29 @@
 module.exports = {
 
 	set: function (req, res) {
-		Device.update({	name: req.param('name') },
-		{ batt_level: req.param('batt')	}, 
-		function(err, devs) {
+		var devName = req.param('name');
+		var battLev = req.param('batt');
+		Device.findOneByName(devName).done(function(err, dev) {
 			if (err) {
 		    	return console.log(err);
 		  	} else {
-				if (devs.length == 0) {
-					// no device found, create new			
-					Device.create({	name: req.param('name'),
-									batt_level: req.param('batt')
-					}).done( function(err, dev) {
+		  		if (dev){
+					Device.update({	name: devName }, { batt_level: battLev }, function(err, devs) {
+						if (err) {
+					    	return console.log(err);
+					  	} else {
+							res.send(devs[0]);
+						}
+					});
+		    	} else {
+		    		Device.create({	name: devName, batt_level: battLev }).done( function(err, dev) {
 					  	if (err) {
 				    		return console.log(err);
 				  		}else {
 				  			res.send(dev);
 				  		}
 					});
-				}else{
-					// device found and updated
-					res.send(devs[0]);
-				}
+		    	}
 		  	}
 		});
 	}

@@ -17,6 +17,12 @@ module.exports = {
 		batt_level: {
 			type: 'float',
 			required: true
-		}
+		},
+ 		toJSON: function() {
+      		var obj = this.toObject();
+       		obj.createdAt = DateHelper.formatLocal(obj.createdAt, "dd.MM.yyyy hh:mm:ss");
+      		obj.updatedAt = DateHelper.formatLocal(obj.updatedAt, "dd.MM.yyyy hh:mm:ss");
+      		return obj;
+    	}
 	}
 };

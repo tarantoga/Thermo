@@ -15,7 +15,12 @@ module.exports = {
 				if (samples.length == 0) {
 					res.view({ temp: '--.--' });
 				}else{
-					res.view({ temp: samples[0].value.toFixed(1) });
+					var gmt = samples[0].createdAt;
+					//var local = new Date(gmt.getTime() - (gmt.getTimezoneOffset() * 60000));
+					//console.log(localDate.toString());
+					var formatted = DateHelper.formatLocal(gmt, "dd.MM.yyyy hh:mm:ss");
+					console.log(formatted);
+					res.view({ temp: samples[0].value.toFixed(1), time: formatted });
 				}
 			}
 		});

@@ -11,8 +11,16 @@
 		<script type="text/javascript" src="/js/jquery-1.10.2.min.js"></script>
 		
 		<script type="text/javascript">
-			socket.on('message', function(msg){	
+			socket.on('message', function(msg){
+				//var timestamp = msg.data.createdAt.replace(/-/g, "/").replace(/[TZ]/g, " ");
+				//var gmt = new Date(timestamp.split(".")[0].replace(/-/g,"/"));
+				//var local = new Date(gmt.getTime() - (gmt.getTimezoneOffset() * 60000));
+
+				//var t = DateHelper.formatDate(localDate, "hh:mm:ss");
+				//var t = local.getHours()+":"+local.getMinutes()+":"local.getSeconds();
+				//alert(t);
 				$('#temp').html(msg.data.value.toFixed(1) + '°C');
+				$('#time').html(msg.data.createdAt);
 			});
 			socket.get('/sample/subscribe', function(res) {});
 		</script>
@@ -21,6 +29,7 @@
 		<div class="block" style="height: 320px;">
 		    <div class="centered">
 		        <div id="temp"><%= temp %>°C</div>
+		        <div id="time"><%= time %></div>
 		    </div>
 		</div>
 	</body>

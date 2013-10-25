@@ -24,7 +24,7 @@ module.exports = {
 		});
 	},
 
-	subscribe: function (req, res) {
+	initialize: function (req, res) {
 		Sample.subscribe(req.socket);
 		//send initial graph data - last 300 samples = latest 150 minutes
 		Sample.find().limit(300).sort('createdAt DESC').done(function(err, samples) {
@@ -33,11 +33,38 @@ module.exports = {
 			if (err) {
 				return console.log(err);
 			} else {
+				//create values array for simplify-js
+				var curTime = new Date().getTime();
 				var vals = new Array();
 				for (var i = samples.length - 1; i >= 0 ; i--) {
-					vals.push(samples[i].value);
+					var sampleTime = samples[i].createdAt.getTime();
+					var diffTime = Math.round((sampleTime - curTime) / 1000);	//this is our x (time)
+					vals.push({"x":diffTime, "y":samples[i].value});
 				}
-				req.socket.emit('graphdata', {values: vals});
+				//simplify graph
+				var simplified = Simplify(vals);
+
+				var arrx = new Array();
+				var arry = new Array();
+				for (var i = 0; i < simplified.length; i++) {
+					arrx.push(simplified[i].x);
+					arry.push(simplified[i].y);
+				}
+				//format chart data so it gets into 320 * 60 pixels
+				var minX = Math.min.apply(Math, arrx);
+				var maxX = Math.max.apply(Math, arrx);
+				var minY = Math.min.apply(Math, arry);
+				var maxY = Math.max.apply(Math, arry);
+
+				var cX = 320 / (maxX - minX);	//constant value is width of graph
+				var x0 = maxX;
+				var cY = 60 / (maxY - minY);	//constant value is height of graph
+				var y0 = minY;
+
+				arrx = arrx.map(function(x){return 320 + (x - x0) * cX;});
+				arry = arry.map(function(y){return 60 - (y - y0) * cY;});
+
+				req.socket.emit('graphdata', {"xs": arrx, "ys": arry, "min": minY, "max": maxY});
 				res.send();
 			}
 		});

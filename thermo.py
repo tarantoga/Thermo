@@ -1,6 +1,8 @@
 import sys
 import serial
 import urllib
+import urllib2
+from urllib2 import URLError
 from daemon import runner
 
 class App():
@@ -23,7 +25,7 @@ class App():
 				params = urllib.urlencode({
 								  'message': data
 								  })
-				urllib.urlopen(urlData, params).read()
+				urllib2.urlopen(urlData, params).read()
 				sensor = data[1:3]
 				command = data[3:]
 				if command.startswith('TMPA'):
@@ -33,7 +35,7 @@ class App():
 								  'device': sensor,
 								  'value': ftmp,
 								  })
-					urllib.urlopen(urlSample, params).read()
+					urllib2.urlopen(urlSample, params).read()
 				elif command.startswith('BATT'):
 					sbatt = data[-5:-1]
 					fbatt = float(sbatt)
@@ -41,7 +43,7 @@ class App():
 								'name': sensor,
 								'batt': fbatt,
 								})
-					urllib.urlopen(urlDevice, params).read()
+					urllib2.urlopen(urlDevice, params).read()
 			except URLError as e:
 			    if hasattr(e, 'reason'):
 			        print('Failed to reach a server.')

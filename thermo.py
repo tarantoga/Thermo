@@ -42,9 +42,13 @@ class App():
 								'batt': fbatt,
 								})
 					urllib.urlopen(urlDevice, params).read()
-			except urllib.error.HTTPError as e:
-				print(e.code)
-				print(e.read())
+			except URLError as e:
+			    if hasattr(e, 'reason'):
+			        print('Failed to reach a server.')
+			        print('Reason: ', e.reason)
+			    elif hasattr(e, 'code'):
+			        print('The server couldn\'t fulfill the request.')
+			        print('Error code: ', e.code)
 					
 app = App()
 daemon_runner = runner.DaemonRunner(app)

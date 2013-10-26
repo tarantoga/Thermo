@@ -65,8 +65,8 @@ module.exports = {
 
 				req.socket.emit('graphdata', {"xs": arrx, "ys": arry, 
 					"min": minY.toFixed(1), "max": maxY.toFixed(1),
-					"tmin": DateHelper.formatTime(samples[samples.length - 1].createdAt), 
-					"tmax": DateHelper.formatTime(samples[0].createdAt)});
+					"tmin": DateHelper.formatDate(samples[samples.length - 1].createdAt, "hh:mm"), 
+					"tmax": DateHelper.formatDate(samples[0].createdAt, "hh:mm")});
 				res.send();
 			}
 		});

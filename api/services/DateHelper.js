@@ -23,13 +23,5 @@ exports.formatLocal = function(gmt, format)
 {
 	var local = new Date(gmt.getTime() - (gmt.getTimezoneOffset() * 60000));
 	return this.formatDate(local, format);
-},
-
-exports.formatTime = function(t)
-{
-	var hrs = t.getHours();
-	if (hrs < 10) {hrs = "0" + hrs;}
-	var mns = t.getMinutes();
-	if (mns < 10) {mns = "0" + mns;}
-	return hrs + ":" + mns;
 }
+

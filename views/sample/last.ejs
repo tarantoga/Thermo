@@ -14,7 +14,7 @@
 		<script type="text/javascript">
 			socket.on('message', function(msg){
 				//alert(JSON.stringify(msg));
-				$('#temp').html(msg.data.value.toFixed(1) + '°C');
+				$('#temp').html(msg.data.value.toFixed(1) + '°');
 				$('#time').html(msg.data.createdAt);				
 			});
 			socket.on('graphdata', function(data){
@@ -41,15 +41,19 @@
 
 				ctx.font="16px Arial";
 				ctx.fillStyle = "#cbb";
-				ctx.fillText(data.min, 322.5, 65);
-				ctx.fillText(data.max, 322.5, 5);
+
+				ctx.fillText(data.max + '°', 322.5, 10);
+				ctx.fillText(data.min + '°', 322.5, 60);
+
+				ctx.fillText(data.tmin, 0, 75.5);
+				ctx.fillText(data.tmax, 280, 75.5);
 
 				ctx.beginPath();
 				ctx.moveTo(0, 0);
-				ctx.lineTo(0,60);
-				ctx.lineTo(320,60);
-				ctx.lineTo(320,0);
-				ctx.lineTo(0,0);
+				ctx.lineTo(0, 60);
+				ctx.lineTo(320, 60);
+				ctx.lineTo(320, 0);
+				ctx.lineTo(0, 0);
 				ctx.strokeStyle = '#cbb';
 				ctx.stroke();
 				ctx.closePath();
@@ -63,7 +67,7 @@
 		    <div class="centered">
 		        <div id="temp"><%= temp %>°C</div>
 		        <div id="time"><%= time %></div>
-		        <canvas id="canvas" width="365" height="80" style="width: 180px; height: 40px"/>
+		        <canvas id="canvas" width="365" height="90" style="width: 180px; height: 40px"/>
 		    </div>
 		</div>
 	</body>

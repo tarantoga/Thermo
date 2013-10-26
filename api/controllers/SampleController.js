@@ -8,7 +8,6 @@
 module.exports = {
   
 	last: function (req, res) {
-
 		Sample.find({ device: 'AA' }).limit(1).sort('createdAt DESC').done(function(err, samples) {
 			if (err) {
 				return console.log(err);
@@ -42,7 +41,7 @@ module.exports = {
 					vals.push({"x":diffTime, "y":samples[i].value});
 				}
 				//simplify graph
-				var simplified = Simplify(vals);
+				var simplified = Simplify(vals, 0.1);
 
 				var arrx = new Array();
 				var arry = new Array();
@@ -64,10 +63,12 @@ module.exports = {
 				arrx = arrx.map(function(x){return 320 + (x - x0) * cX;});
 				arry = arry.map(function(y){return 60 - (y - y0) * cY;});
 
-				req.socket.emit('graphdata', {"xs": arrx, "ys": arry, "min": minY, "max": maxY});
+				req.socket.emit('graphdata', {"xs": arrx, "ys": arry, 
+					"min": minY.toFixed(1), "max": maxY.toFixed(1),
+					"tmin": DateHelper.formatTime(samples[samples.length - 1].createdAt), 
+					"tmax": DateHelper.formatTime(samples[0].createdAt)});
 				res.send();
 			}
 		});
 	}
- 
 };

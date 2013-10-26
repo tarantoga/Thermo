@@ -25,8 +25,8 @@ module.exports = {
 
 	initialize: function (req, res) {
 		Sample.subscribe(req.socket);
-		//send initial graph data - last 300 samples = latest 150 minutes
-		Sample.find().limit(300).sort('createdAt DESC').done(function(err, samples) {
+		//send initial graph data - last 1200 samples = last 10 hours
+		Sample.find().limit(1200).sort('createdAt DESC').done(function(err, samples) {
 
 			// Error handling
 			if (err) {
@@ -41,7 +41,7 @@ module.exports = {
 					vals.push({"x":diffTime, "y":samples[i].value});
 				}
 				//simplify graph
-				var simplified = Simplify(vals, 0.1);
+				var simplified = Simplify(vals, 0.5);
 
 				var arrx = new Array();
 				var arry = new Array();

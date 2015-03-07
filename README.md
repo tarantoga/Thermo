@@ -5,5 +5,4 @@ Every time new sample is acquired displayed value is updated (using websockets).
 Currently one sensor's value is displayed (gathering of data from multiple sensors is supported thou).
 #####TODOs:
 - add sensor's battery level display
-- add graph for last 24 hours, last week, etc.
 - add more sensors support
